@@ -1,21 +1,36 @@
 import { useState } from 'react';
-import { searchForShows, searchForPeople } from '../api/tvmaze';
+import { searchForShows ,  searchForPeople } from './../api/tvmaze';
+import { useQuery } from '@tanstack/react-query';
 import SearchForm from '../components/SearchForm';
 import ShowGrid from '../components/shows/ShowGrid';
 import ActorsGrid from '../components/actors/ActorsGrid';
 
 const Home = () => {
- 
-  const [apiData, setApiData] = useState(null);
-  const [apiDataError, serApiDataError] = useState(null);
+   
+  const [filter, setFilter] = useState(null);
+
+  const { data : apiData ,error : apiDataError} = useQuery({
+      queryKey: ['search', filter],
+      queryFn: () => 
+           filter.searchOption === 'shows' 
+           ? searchForShows(filter.q)
+           : searchForPeople(filter.q),
+      // ⬇️ disabled as long as the filter is empty
+      enabled: !!filter,
+      refetchOnWindowFocus: false,
+  });
+  //const [apiData, setApiData] = useState(null);
+  //const [apiDataError, serApiDataError] = useState(null);
  
 
  
 
   const onSearch = async ({ q , searchOption }) => {
+
+    setFilter({q, searchOption });
     
     //error catching
-    try {
+   /* try {
       serApiDataError(null);
       let result;
       if (searchOption === 'shows') {
@@ -27,7 +42,7 @@ const Home = () => {
       setApiData(result);
     } catch (error) {
       serApiDataError(error);
-    }
+    }*/
 
     //Api server link
     //https://api.tvmaze.com/search/shows?q=boys

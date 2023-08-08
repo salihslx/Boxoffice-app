@@ -5,6 +5,23 @@ const SearchForm = ({ onSearch }) => {
     const [searchStr, setSearchStr] = useState(' ');
     const [searchOption, setSearchOption] = useState('shows');
 
+    // 1)Mount
+    // 2)Rerender
+    //  2.5) Logic before next rerender
+    // 3)Unmount
+
+    //useEffects runs at least once
+   /* console.log("Component Rerender");
+    useEffect(() => {
+            
+       console.log("Search option changes", searchOption); //current 
+
+        return () => {
+            console.log("Before next useeffect run" , searchOption); //past
+        };
+                     
+    } , [searchOption]);*/   //dependeci array
+    
     const onSearchInputChange = ev => {
         setSearchStr(ev.target.value);
       };
