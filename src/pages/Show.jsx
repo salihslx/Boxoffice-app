@@ -6,6 +6,8 @@ import Details from "../components/shows/Details";
 import ShowMainData from "../components/shows/ShowMainData";
 import Seasons from "../components/shows/Seasons";
 import Cast from "../components/shows/Cast";
+import { styled } from "styled-components";
+import {TextCenter} from '../components/common/TextCenter'
 
 /*const useShowById = showId => {
     
@@ -44,15 +46,15 @@ const Show = () => {
         navigateTo('/');
       }*/
       if(showError){
-        return <div><h2>we have an error : {showError.message}</h2></div>
+        return <TextCenter>we have an error : {showError.message}</TextCenter>
       }
       if(showData){
         return ( 
-          <div>
-
+          <ShowPageWrapper>
+          <BackHomeWrapper>
            <Link to="/">Go back to home</Link>
            {/*<button type="button" onClick={onGoBack}> Go back to home</button>*/}
-          
+          </BackHomeWrapper>
           <ShowMainData 
              image = {showData.image}
              name = {showData.name}
@@ -60,14 +62,14 @@ const Show = () => {
              summary={showData.summary}
              genres = {showData.genres}/>
          
-          <div>
+          <InfoBlock>
             <h2>Details</h2>
             <Details 
                status = {showData.status}
                premiered = {showData.premiered}
                network = {showData.network}
              />
-          </div>
+          </InfoBlock>
           <div>
             <h2>Seasons</h2>
             <Seasons seasons = {showData._embedded.seasons}/>
@@ -78,14 +80,46 @@ const Show = () => {
             <Cast cast = {showData._embedded.cast}/>
          </div>
           
-        </div>)
+        </ShowPageWrapper>)
       };
 
 
     return (
       <div>
-        <h2>Data is loading</h2>
+        <TextCenter>Data is loading</TextCenter>
       </div>
     );
   };
   export default Show;
+
+  const BackHomeWrapper = styled.div`
+  margin-bottom: 30px;
+  text-align: left;
+  a {
+    padding: 10px;
+    color: ${({ theme }) => theme.mainColors.dark};
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const ShowPageWrapper = styled.div`
+  margin: auto;
+  @media only screen and (min-width: 768px) {
+    max-width: 700px;
+  }
+  @media only screen and (min-width: 992px) {
+    max-width: 900px;
+  }
+`;
+
+const InfoBlock = styled.div`
+  margin-bottom: 40px;
+  h2 {
+    margin: 0;
+    margin-bottom: 30px;
+    font-size: 22px;
+  }
+`;
